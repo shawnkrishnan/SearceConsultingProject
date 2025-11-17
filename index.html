@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Searce – AI Business Solutions (Life Sciences & Health Care)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-elevated: #0b1020;
+      --card: #111827;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.12);
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --border-subtle: #1f2933;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #111827 0, #020617 55%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* Layout */
+    .sidebar {
+      width: 260px;
+      padding: 24px 20px;
+      border-right: 1px solid var(--border-subtle);
+      background: linear-gradient(to bottom, #020617, #020617f0);
+      position: sticky;
+      top: 0;
+      align-self: flex-start;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .main {
+      flex: 1;
+      padding: 24px 32px 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+      overflow-y: auto;
+    }
+
+    @media (max-width: 900px) {
+      body {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border-subtle);
+      }
+
+      .main {
+        padding: 20px 16px 32px;
+      }
+    }
+
+    /* Sidebar content */
+    .brand {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 0 0 4px;
+    }
+
+    .subtitle {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin: 0 0 16px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(15, 23, 42, 0.6);
+      margin-bottom: 18px;
+    }
+
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.9);
+    }
+
+    .sidebar-section-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+      margin: 18px 0 6px;
+    }
+
+    .idea-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .idea-nav-button {
+      text-align: left;
+      border-radius: 10px;
+      padding: 10px 12px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-main);
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      transition: background 0.18s ease, border-color 0.18s ease,
+        transform 0.12s ease;
+    }
+
+    .idea-nav-button span.label {
+      font-weight: 500;
+    }
+
+    .idea-nav-button span.desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .idea-nav-button:hover {
+      background: rgba(15, 23, 42, 0.85);
+      border-color: var(--border-subtle);
+      transform: translateY(-1px);
+    }
+
+    .idea-nav-button.active {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.2);
+    }
+
+    /* Main content */
+    .section-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .section-heading {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin: 0 0 12px;
+    }
+
+    .executive-summary {
+      background: radial-gradient(
+        circle at top left,
+        rgba(56, 189, 248, 0.09),
+        rgba(15, 23, 42, 0.96)
+      );
+      border-radius: 18px;
+      padding: 18px 18px 16px;
+      border: 1px solid var(--border-subtle);
+      margin-bottom: 24px;
+    }
+
+    .executive-summary p {
+      margin: 4px 0 0;
+      font-size: 0.93rem;
+      line-height: 1.5;
+      color: var(--text-main);
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .tag {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+    }
+
+    /* Idea cards */
+    .idea-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .idea-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .idea-meta {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-align: right;
+    }
+
+    .ideas-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .idea-card {
+      background: var(--card);
+      border-radius: 16px;
+      border: 1px solid var(--border-subtle);
+      padding: 14px 14px 10px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.9);
+      display: none;
+    }
+
+    .idea-card.active {
+      display: block;
+    }
+
+    .pill-small {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      background: rgba(15, 23, 42, 0.7);
+    }
+
+    .pill-small-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    /* Accordions */
+    .accordion {
+      margin-top: 10px;
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      overflow: hidden;
+      background: #020617;
+    }
+
+    .accordion-item + .accordion-item {
+      border-top: 1px solid #111827;
+    }
+
+    .accordion-header {
+      padding: 10px 12px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.88rem;
+      background: rgba(15, 23, 42, 0.96);
+    }
+
+    .accordion-header span {
+      font-weight: 500;
+    }
+
+    .accordion-header button {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 0;
+      margin-left: 10px;
+    }
+
+    .accordion-body {
+      padding: 10px 12px 8px;
+      font-size: 0.87rem;
+      line-height: 1.5;
+      color: var(--text-main);
+      display: none;
+    }
+
+    .accordion-body.open {
+      display: block;
+    }
+
+    .accordion-body ul {
+      margin: 6px 0 4px 18px;
+      padding: 0;
+    }
+
+    .accordion-body li {
+      margin-bottom: 4px;
+    }
+
+    .recommendations-list {
+      margin: 4px 0 0 16px;
+      padding: 0;
+      font-size: 0.85rem;
+    }
+
+    .recommendations-list li {
+      margin-bottom: 4px;
+    }
+
+    .footer-note {
+      margin-top: 20px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: right;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">Searce &middot; Business Solutions</div>
+    <h1 class="title">AI Initiatives for Life Sciences &amp; Health Care</h1>
+    <p class="subtitle">Prepared by <strong>Shawn Krishnan</strong></p>
+
+    <div class="pill">
+      <span class="pill-dot"></span>
+      <span>AI-native, engineering-led proposals</span>
+    </div>
+
+    <div class="sidebar-section-title">Overview</div>
+    <p style="font-size:0.82rem; color:var(--text-muted); margin:0 0 8px;">
+      Three niche AI software solutions targeting operational friction in home
+      care, radiology, and insurance-driven provider selection.
+    </p>
+
+    <div class="sidebar-section-title">Navigate Ideas</div>
+    <div class="idea-nav">
+      <button class="idea-nav-button active" data-target="idea-1">
+        <span class="label">Idea 1 · Home Care Scheduling &amp; Routing</span>
+        <span class="desc">Dynamic daily routes for caregivers in the field</span>
+      </button>
+      <button class="idea-nav-button" data-target="idea-2">
+        <span class="label">Idea 2 · MRI Image Processing Platform</span>
+        <span class="desc">Deep learning for MRI enhancement &amp; triage</span>
+      </button>
+      <button class="idea-nav-button" data-target="idea-3">
+        <span class="label">Idea 3 · Insurance-Grade Doctor Matching</span>
+        <span class="desc">Patient–provider fit scored with AI</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <!-- Executive Summary -->
+    <div class="section-label">Overview</div>
+    <h2 class="section-heading">Executive Summary</h2>
+    <section class="executive-summary">
+      <p>
+        This proposal outlines three AI-driven software solutions tailored for
+        the Life Sciences and Health Care sector, each designed to solve
+        concrete operational problems with measurable efficiency gains. The
+        first initiative streamlines home care operations by generating optimized,
+        real-time caregiver schedules and routes. The second accelerates
+        radiology workflows using deep-learning models for MRI enhancement,
+        segmentation, and anomaly detection. The third improves patient
+        experience and provider utilization by matching patients to the most
+        suitable doctors through a personalized, data-driven fit model. Together,
+        these solutions demonstrate how AI can reduce manual workload, increase
+        clinical accuracy, and strengthen decision-making across the healthcare
+        ecosystem.
+      </p>
+      <div class="tag-row">
+        <span class="tag">Home Care Ops</span>
+        <span class="tag">Radiology AI</span>
+        <span class="tag">Patient–Provider Fit</span>
+        <span class="tag">Cloud-native</span>
+      </div>
+    </section>
+
+    <!-- Ideas -->
+    <div class="section-label">Solutions</div>
+    <div class="ideas-container">
+      <!-- IDEA 1 -->
+      <article id="idea-1" class="idea-card active">
+        <div class="idea-header-row">
+          <h3 class="idea-title">Idea 1 · Home Care Scheduling &amp; Routing</h3>
+          <div class="idea-meta">
+            <div class="pill-small">
+              <span class="pill-small-dot"></span>
+              <span>Operational efficiency</span>
+            </div>
+            <div style="margin-top:4px;">Dynamic field workforce routing</div>
+          </div>
+        </div>
+
+        <div class="accordion">
+          <!-- Intro -->
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span>Introduction</span>
+              <button aria-label="Toggle section">+</button>
+            </div>
+            <div class="accordion-body">
+              Home care agencies struggle with disjointed scheduling, fluctuating
+              caregiver availability, and significant administrative burden.
+              Existing tools rarely account for patient acuity, caregiver skill
+              sets, or real-world travel conditions when building daily routes.
+              An AI-driven scheduling engine automatically generates optimized
+              caregiver assignments based on location, compliance requirements,
+              and historical performance, while integrating EHR data, real-time
+              GPS signals, and automated SMS/voice updates.
+              <br /><br />
+              <strong>Core problem solved with AI:</strong> Delivering dynamic
+              workforce routing that schedules caregivers under complex constraints
+              such as skills, time windows, regulations, and travel time.
+            </div>
+          </div>
+
+          <!-- Methods -->
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span>Methods</span>
+              <button aria-label="Toggle section">+</button>
+            </div>
+            <div class="accordion-body">
+              <ul>
+                <li>
+                  <strong>Step 1: Collect the essentials</strong> – Pull in patient
+                  details (acuity, address, required time window) from the EHR and
+                  caregiver info (skills, credentials, availability, home base)
+                  from the workforce system. Normalize and store everything in a
+                  simple relational database.
+                </li>
+                <li>
+                  <strong>Step 2: Add location &amp; timing intelligence</strong> –
+                  Convert all addresses to coordinates using a geocoding API. Build
+                  a travel-time matrix using Google Maps/Mapbox so the system
+                  knows how long it takes to get from any caregiver to any patient.
+                  Estimate visit length using rules or a lightweight model.
+                </li>
+                <li>
+                  <strong>Step 3: Build the daily schedule</strong> – Feed all
+                  inputs into a routing solver that handles real constraints, time
+                  windows, drive limits, acuity priorities, overtime caps, and
+                  caregiver skill matching. Use OR-Tools or Gurobi to generate an
+                  ordered list of visits for each caregiver with timestamps.
+                </li>
+                <li>
+                  <strong>Step 4: Handle real-world chaos</strong> – If a patient
+                  cancels, a caregiver calls off, or traffic shifts, publish an
+                  event and re-run the solver for just the affected routes. Only
+                  reshuffle what’s necessary; keep completed or in-progress visits
+                  intact.
+                </li>
+                <li>
+                  <strong>Step 5: Serve it to operations &amp; track performance</strong>
+                  – Expose schedules via an API or dispatcher dashboard showing
+                  caregiver routes on a map, timelines, and metrics like drive
+                  time and on-time percentages. Log each optimization run and
+                  track KPIs so the system learns where schedules break and where
+                  time is being wasted.
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Discussion -->
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span>Discussion &amp; Recommendations</span>
+              <button aria-label="Toggle section">+</button>
+            </div>
+            <div class="accordion-body">
+              This AI-driven scheduling system replaces static, manual coordination
+              with dynamic routing that adapts to real-world changes like
+              cancellations, delays, and traffic. By combining patient acuity,
+              caregiver skills, and geospatial data, it delivers more efficient
+              schedules, reduces overtime, and cuts dispatcher workload. Agencies
+              should start with a simple core—EHR ingestion, geocoding, and a
+              baseline routing solver—before adding real-time reoptimization and
+              mobile caregiver updates. Prioritizing clear explanations for
+              assignments and tracking KPIs like drive time and on-time performance
+              will build trust and enable continuous improvement as the system
+              learns from historical data.
+              <ul class="recommendations-list">
+                <li>
+                  Start with a lightweight core (EHR ingestion, geocoding, baseline
+                  routing solver) to ensure reliability before adding advanced
+                  features.
+                </li>
+                <li>
+                  Introduce real-time reoptimization only after data quality and
+                  visit-duration predictions stabilize.
+                </li>
+                <li>
+                  Implement clear assignment explanations and KPI tracking (drive
+                  time, on-time %, utilization) to build trust and support
+                  continuous improvement.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- IDEA 2 -->
+      <article id="idea-2" class="idea-card">
+        <div class="idea-header-row">
+          <h3 class="idea-title">
+            Idea 2 · AI-Powered MRI Image Processing Platform
+          </h3>
+          <div class="idea-meta">
+            <div class="pill-small">
+              <span class="pill-small-dot"></span>
+              <span>Clinical accuracy</span>
+            </div>
+            <div style="margin-top:4px;">Deep-learning workflows for MRI</div>
+          </div>
+        </div>
+
+        <div class="accordion">
+          <!-- Intro -->
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span>Introduction</span>
+              <button aria-label="Toggle section">+</button>
+            </div>
+            <div class="accordion-body">
+              Radiology departments face massive backlogs, variable image quality,
+              and high false-positive burdens. Traditional systems lack
+              explainability and cross-modality analysis. A cloud-native MRI image
+              processing tool uses deep learning to detect anomalies, enhance image
+              quality, generate segmentation masks, and support radiologist
+              workflows.
+              <br /><br />
+              <strong>Core problem solved with AI:</strong> High-resolution 2D/3D
+              medical image understanding, including segmentation, anomaly
+              detection, and triage scoring (e.g., for stress fractures and other
+              conditions).
+            </div>
+          </div>
+
+          <!-- Methods -->
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span>Methods</span>
+              <button aria-label="Toggle section">+</button>
+            </div>
+            <div class="accordion-body">
+              <ul>
+                <li>
+                  <strong>Step 1: Data acquisition &amp; preprocessing</strong> –
+                  Ingest MRI scans directly from PACS/DICOM systems. Standardize
+                  voxel spacing, normalize intensities, and run artifact reduction.
+                  Store preprocessed scans in a secure cloud-based imaging
+                  repository.
+                </li>
+                <li>
+                  <strong>Step 2: Image enhancement &amp; reconstruction</strong> –
+                  Apply super-resolution CNNs or diffusion-based denoising to
+                  improve clarity, reduce noise, and enhance structural boundaries.
+                  Optionally reconstruct missing slices using learned priors.
+                </li>
+                <li>
+                  <strong>Step 3: Segmentation &amp; anomaly detection</strong> –
+                  Run deep learning models (U-Net, nnU-Net, Vision Transformers) to
+                  produce segmentation masks for organs, tissues, or suspected
+                  lesions. Use anomaly detection models to flag irregular regions
+                  and assign triage scores based on severity.
+                </li>
+                <li>
+                  <strong>Step 4: Generate radiologist-ready outputs</strong> –
+                  Produce overlays, heatmaps, and structured reports with
+                  probability scores. Export results back into PACS with
+                  DICOM-compliant annotations.
+                </li>
+                <li>
+                  <strong>Step 5: Continuous learning loop</strong> – Use
+                  radiologist corrections and accepted/rejected model outputs to
+                  retrain the models, improving sensitivity and specificity over
+                  time.
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Discussion -->
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span>Discussion &amp; Recommendations</span>
+              <button aria-label="Toggle section">+</button>
+            </div>
+            <div class="accordion-body">
+              This AI MRI platform reduces radiologist workload by automating
+              routine steps—preprocessing, segmentation, and early anomaly
+              spotting—while improving consistency across modalities. By providing
+              overlays, explainable heatmaps, and triage scores, it accelerates
+              interpretation without replacing clinical judgment. The most
+              effective rollout begins with a narrow use case (e.g., musculoskeletal
+              or neuro MRI) before expanding to full-body workflows. Ensuring
+              seamless PACS integration, strong model explainability, and rigorous
+              monitoring of false positives/negatives is essential for adoption
+              and regulatory compliance.
+              <ul class="recommendations-list">
+                <li>
+                  Start with a single high-impact MRI domain (e.g., brain, knee, or
+                  spine) to validate accuracy and streamline integration before
+                  broadening scope.
+                </li>
+                <li>
+                  Deploy explainability features (saliency maps, confidence scores,
+                  segmentation overlays) to build clinician trust and reduce
+                  resistance to AI-assisted reading.
+                </li>
+                <li>
+                  Implement a continuous feedback loop where radiologist corrections
+                  feed back into model retraining, steadily improving performance
+                  and reducing diagnostic error rates.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- IDEA 3 -->
+      <article id="idea-3" class="idea-card">
+        <div class="idea-header-row">
+          <h3 class="idea-title">
+            Idea 3 · Insurance-Grade Doctor Matching Software (Patient–Provider Fit)
+          </h3>
+          <div class="idea-meta">
+            <div class="pill-small">
+              <span class="pill-small-dot"></span>
+              <span>Patient experience</span>
+            </div>
+            <div style="margin-top:4px;">AI-scored provider fit for insurers</div>
+          </div>
+        </div>
+
+        <div class="accordion">
+          <!-- Intro -->
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span>Introduction</span>
+              <button aria-label="Toggle section">+</button>
+            </div>
+            <div class="accordion-body">
+              Current insurance “doctor finders” are outdated, un-personalized,
+              and high-friction. Patients pick doctors based on random guesses
+              rather than expertise, personality, availability, or cultural fit.
+              An AI engine for insurance companies can match patients with the best
+              doctor using clinical expertise, personality vectors, visit history,
+              demographics, preferences, and predicted satisfaction.
+              <br /><br />
+              <strong>Core problem solved with AI:</strong> Establishing better
+              “fit” between patients and providers by modeling both clinical
+              suitability and human factors like communication style and cultural
+              preferences.
+            </div>
+          </div>
+
+          <!-- Methods -->
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span>Methods</span>
+              <button aria-label="Toggle section">+</button>
+            </div>
+            <div class="accordion-body">
+              <ul>
+                <li>
+                  <strong>Step 1: Build provider profiles</strong> – Ingest
+                  structured data (specialty, subspecialty, credentials, conditions
+                  treated, visit lengths) plus unstructured signals (reviews,
+                  communication style, bedside manner) using NLP to create
+                  multi-dimensional doctor vectors.
+                </li>
+                <li>
+                  <strong>Step 2: Build patient preference vectors</strong> – Use
+                  demographics, medical history, prior visit satisfaction,
+                  communication preferences, and stated needs to generate
+                  preference embeddings.
+                </li>
+                <li>
+                  <strong>Step 3: Fit scoring model</strong> – Train a model that
+                  predicts “match quality” based on historical pairings, using
+                  gradient boosting or neural networks to estimate likelihood of
+                  satisfaction, continuity, and positive outcomes.
+                </li>
+                <li>
+                  <strong>Step 4: Search &amp; ranking engine</strong> – Generate a
+                  ranked list of top-fit doctors filtered by insurance network,
+                  availability, location, gender preference, and clinical
+                  suitability.
+                </li>
+                <li>
+                  <strong>Step 5: Deploy results to UX</strong> – Expose matches in
+                  an intuitive UI with explanations (“matched due to experience
+                  with X,” “high communication-style alignment,” “short wait
+                  times”).
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Discussion -->
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span>Discussion &amp; Recommendations</span>
+              <button aria-label="Toggle section">+</button>
+            </div>
+            <div class="accordion-body">
+              This AI matching system transforms doctor selection from a blind
+              search into a personalized experience that improves satisfaction,
+              strengthens care relationships, and reduces provider churn. By
+              combining clinical factors with softer elements like communication
+              style and cultural preferences, insurers can guide patients toward
+              physicians who are both clinically qualified and personally
+              compatible. To ensure adoption, the rollout should start with one
+              specialty and prioritize model transparency, regulatory alignment,
+              and real-world validation through A/B testing.
+              <ul class="recommendations-list">
+                <li>
+                  Begin with a high-volume specialty (e.g., primary care or
+                  pediatrics) to validate the fit model before expanding across the
+                  network.
+                </li>
+                <li>
+                  Incorporate explainability features so patients and insurers
+                  understand why a doctor is recommended, increasing trust and
+                  conversion.
+                </li>
+                <li>
+                  Establish a continuous feedback loop using post-visit surveys,
+                  complaint data, and follow-up behavior to improve matching
+                  accuracy over time.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="footer-note">
+      Searce &middot; AI-native consulting &mdash; Strategy to execution, end to
+      end.
+    </div>
+  </main>
+
+  <script>
+    // Switch between ideas
+    const navButtons = document.querySelectorAll(".idea-nav-button");
+    const ideaCards = document.querySelectorAll(".idea-card");
+
+    navButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const targetId = btn.dataset.target;
+
+        navButtons.forEach((b) => b.classList.remove("active"));
+        ideaCards.forEach((card) => card.classList.remove("active"));
+
+        btn.classList.add("active");
+        document.getElementById(targetId).classList.add("active");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    });
+
+    // Accordions
+    const accordionHeaders = document.querySelectorAll(".accordion-header");
+
+    accordionHeaders.forEach((header) => {
+      header.addEventListener("click", () => {
+        const body = header.nextElementSibling;
+        const isOpen = body.classList.contains("open");
+        if (isOpen) {
+          body.classList.remove("open");
+          header.querySelector("button").textContent = "+";
+        } else {
+          body.classList.add("open");
+          header.querySelector("button").textContent = "–";
+        }
+      });
+    });
+
+    // Open Introduction sections by default
+    document.querySelectorAll(".accordion-item:first-child .accordion-body")
+      .forEach((body) => body.classList.add("open"));
+    document.querySelectorAll(".accordion-item:first-child .accordion-header button")
+      .forEach((btn) => (btn.textContent = "–"));
+  </script>
+</body>
+</html>
+
